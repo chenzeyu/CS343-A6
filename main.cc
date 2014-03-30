@@ -1,3 +1,6 @@
+// CS343 - Concurrent and Parallel Programming
+// Winter, 2014
+// Assignment 6
 #include <uC++.h>
 #include <unistd.h>
 #include <iostream>

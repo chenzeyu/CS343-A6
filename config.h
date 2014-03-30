@@ -1,3 +1,6 @@
+// CS343 - Concurrent and Parallel Programming
+// Winter, 2014
+// Assignment 6
 #ifndef CONFIG_H
 #define CONFIG_H
 

@@ -1,3 +1,6 @@
+// CS343 - Concurrent and Parallel Programming
+// Winter, 2014
+// Assignment 6
 Bank::Bank(unsigned int numStudents):numStudents(numStudents){
     accountConditions = new uCondition[numStudents];
     studentAccounts = new int[numStudents];
