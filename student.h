@@ -7,6 +7,9 @@
 #include "nameServer.h"
 #include "watcardOffice.h"
 #include "vendingMachine.h"
+#include "watcardOffice.h"
+#include "watcard.h"
+
 class printer;
 class nameserver;
 class watcardOffice;
@@ -19,8 +22,7 @@ _Task Student {
         WATCardOffice &office;
         unsigned int id;
         unsigned int maxPurchases;
-        unsigned int purchase;
-        unsigned int flavour;
+        enum State {STARTING = 'S', SELECT_MACHINE = 'V', BUY = 'B', WATCARD_LOST = 'L', FINISHED = 'F'};
     public:
         Student( Printer &prt, NameServer &nameServer, WATCardOffice &cardOffice, unsigned int id,
                 unsigned int maxPurchases );

@@ -10,10 +10,10 @@ Parent::Parent(Printer &prt, Bank &bank, unsigned int numStudents, unsigned int 
     bank(bank),
     numStudents(numStudents),
     delay(parentalDelay){
-        printer.print(Printer::Parent, 'S');
     }
 
 Parent::main(){
+    printer.print(Printer::Parent, 'S');
     for(;;){
         _Accept(~Parent){
             break;
