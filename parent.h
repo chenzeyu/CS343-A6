@@ -11,11 +11,12 @@ class Printer;
 class Bank;
 
 _Task Parent {
-    void main();
-    unsigned int numStudents;
-    Printer &printer;
-    Bank &bank;
-  public:
-    Parent( Printer &prt, Bank &bank, unsigned int numStudents, unsigned int parentalDelay );
+    private:
+        void main();
+        unsigned int numStudents;
+        Printer &printer;
+        Bank &bank;
+    public:
+        Parent( Printer &prt, Bank &bank, unsigned int numStudents, unsigned int parentalDelay );
 };
 #endif
