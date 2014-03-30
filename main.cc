@@ -13,7 +13,7 @@
 #include "vendingMachine.h"
 #include "bottlingPlant.h"
 #include "student.h"
-#include "MPRNG.h"
+#include "mprng.h"
 
 using namespace std;
 

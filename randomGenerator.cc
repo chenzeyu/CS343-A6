@@ -1,3 +1,3 @@
-#include "MPRNG.h"
+#include "mprng.h"
 
-MPRNG randomGen;
+MPRNG mprng;
