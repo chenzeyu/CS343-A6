@@ -16,10 +16,10 @@ BottlingPlant, NameServer, Truck, VendingMachine all compile but haven't been te
 
 Chen TODO
 ------------
-* WatCard - not started
+* WatCard - implemented
 * WatCardOffice - not started
 * Parent - implemented
 * Bank - implemented
-* Student - not finished
+* Student - implemented
 
 All haven't been tested.
