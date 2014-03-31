@@ -3,15 +3,16 @@
 // Assignment 6
 #ifndef BANK_H
 #define BANK_H
+#include <uC++.h>
 // CS343 - Concurrent and Parallel Programming
 // Winter, 2014
 // Assignment 6
 #include "bank.h"
 _Monitor Bank {
     private:
-        int *bankAccounts;
+        unsigned int *studentAccounts;
         unsigned int numStudents;
-        uCondition *accountConditions
+        uCondition *accountConditions;
     public:
         Bank( unsigned int numStudents );
         ~Bank();

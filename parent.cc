@@ -12,7 +12,7 @@ Parent::Parent(Printer &prt, Bank &bank, unsigned int numStudents, unsigned int 
     delay(parentalDelay){
     }
 
-Parent::main(){
+void Parent::main(){
     printer.print(Printer::Parent, 'S');
     for(;;){
         _Accept(~Parent){
@@ -35,5 +35,4 @@ Parent::main(){
     }
     //finished
     printer.print(Printer::Parent, 'F');
-
 }

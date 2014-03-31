@@ -6,7 +6,7 @@
 #include "printer.h"
 #include "bank.h"
 #include "mprng.h"
-
+#include <uC++.h>
 class Printer;
 class Bank;
 
@@ -16,6 +16,7 @@ _Task Parent {
         unsigned int numStudents;
         Printer &printer;
         Bank &bank;
+        unsigned int delay;
     public:
         Parent( Printer &prt, Bank &bank, unsigned int numStudents, unsigned int parentalDelay );
 };

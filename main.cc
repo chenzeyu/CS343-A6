@@ -11,7 +11,7 @@
 #include "printer.h"
 #include "bank.h"
 #include "parent.h"
-#include "office.h"
+#include "watcardOffice.h"
 #include "nameServer.h"
 #include "vendingMachine.h"
 #include "bottlingPlant.h"
@@ -54,7 +54,7 @@ void uMain::main() {
     if (argc >= 3 && (!convert(seed, argv[2]) || seed <= 0)) {
         usage(argv);
     }
-    randomGen.seed(seed);
+    mprng.seed(seed);
 
     // parse the config file
     ConfigParms params;
@@ -77,8 +77,8 @@ void uMain::main() {
 
     // setup vendingMachine
     VendingMachine *vendingMachines[params.numVendingMachines];
-    for (unsigned int m = 0; machine < params.numVendingMachines; machine++) {
-        vendingMachines[m] = new VendingMachine(printer, *nameserver, machine, params.sodaCost, params.maxStockPerFlavour);
+    for (unsigned int m = 0; m < params.numVendingMachines; m++) {
+        vendingMachines[m] = new VendingMachine(printer, *nameserver, m, params.sodaCost, params.maxStockPerFlavour);
     }
 
     //setup bottling plant
@@ -86,19 +86,19 @@ void uMain::main() {
 
     //set up students
     Student *students[params.numStudents];
-    for (unsigned int s = 0; student < params.numStudents; student++) {
-        students[s] = new Student(printer, *nameserver, *office, student, params.maxPurchases);
+    for (unsigned int s = 0; s < params.numStudents; s++) {
+        students[s] = new Student(printer, *nameserver, *office, s, params.maxPurchases);
     }
 
 
     // cleaning up
-    for (unsigned int s = 0; student < params.numStudents; student++) {
+    for (unsigned int s = 0; s < params.numStudents; s++) {
         delete students[s];
     }
 
     delete plant;
 
-    for (unsigned int m = 0; machine < params.numVendingMachines; machine++) {
+    for (unsigned int m = 0; m < params.numVendingMachines; m++) {
         delete vendingMachines[m];
     }
 

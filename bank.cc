@@ -1,13 +1,14 @@
 // CS343 - Concurrent and Parallel Programming
 // Winter, 2014
 // Assignment 6
+#include "bank.h"
 Bank::Bank(unsigned int numStudents):numStudents(numStudents){
     accountConditions = new uCondition[numStudents];
-    studentAccounts = new int[numStudents];
+    studentAccounts = new unsigned int[numStudents];
 }
 
 Bank::~Bank(){
-    delete [] bankAccounts;
+    delete [] studentAccounts;
     delete [] accountConditions;
 }
 
@@ -15,19 +16,19 @@ Bank::~Bank(){
  * into student's account
  * will signal all blocked withdraw
  */
-Bank::deposit(unsigned int id, unsigned int amount){
+void Bank::deposit(unsigned int id, unsigned int amount){
     //add money
     studentAccounts[id] += amount;
     //signal if blocked
-    while(!accountConditions[id].empty){
-        accountConditions.signal();
+    while(!accountConditions[id].empty()){
+        accountConditions[id].signal();
     }
 }
 
 /* called by couriers to deduct money
  * will block if there's insufficient funds
  */
-Bank::withdraw(unsigned int id, unsigned int amount){
+void Bank::withdraw(unsigned int id, unsigned int amount){
 
     //wait until there's sufficient funds
     while(studentAccounts[id] < amount){
