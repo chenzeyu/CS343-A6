@@ -5,10 +5,10 @@ cs343 assignment 6
 
 Andrew TODO
 ------------
-* BottlingPlant
-* NameServer
-* Truck
-* VendingMachine
+* BottlingPlant - implemented
+* NameServer - implemented
+* Truck - implemented
+* VendingMachine - implemented
 
 BottlingPlant, NameServer, Truck, VendingMachine all compile but haven't been tested.
 

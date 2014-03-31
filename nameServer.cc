@@ -29,7 +29,7 @@ NameServer::~NameServer() {
 }
 
 /*
- * Register a vending machine to the name server
+ * Register a vending machine to the name server.
  */
 void NameServer::VMregister(VendingMachine *vendingMachine) {
     printer.print(Printer::NameServer, (char)Registering, vendingMachine->getId());
@@ -38,7 +38,6 @@ void NameServer::VMregister(VendingMachine *vendingMachine) {
 
 /*
  * Called by a student to get a vending machine.
- * Vendin
  */
 VendingMachine *NameServer::getMachine(unsigned int id) {
     printer.print(Printer::NameServer, (char)NewMachine, id, nextVendingMachine[id]);
@@ -59,6 +58,9 @@ VendingMachine **NameServer::getMachineList() {
  * main function of thread. Will wait for destructor to be called.
  */
 void NameServer::main() {
-    _Accept(~NameServer);
+    while (true) {
+        _Accept(~NameServer) {break;}
+        or _Accept(VMregister, getMachine, getMachineList) {}
+    }
     printer.print(Printer::NameServer, (char)Finished);
 }

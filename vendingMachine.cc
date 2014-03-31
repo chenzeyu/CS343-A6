@@ -35,11 +35,6 @@ VendingMachine::~VendingMachine() {
  * VendingMachine::BUY if the purchase was successful.
  */
 VendingMachine::Status VendingMachine::buy(Flavours flavour, WATCard &card) {
-    // Can't buy anything while the vending machine is being restocked
-    if (stocking) {
-        bench.wait();
-    }
-
     Status status;
 
     if (sodaCounts[flavour] == 0) {
@@ -56,8 +51,6 @@ VendingMachine::Status VendingMachine::buy(Flavours flavour, WATCard &card) {
         printer.print(Printer::Vending, (char)Bought, flavour, sodaCounts[flavour]);
     }
 
-    // Wake any students who may be waiting
-    bench.signal();
     return status;
 }
 
@@ -72,12 +65,11 @@ unsigned int* VendingMachine::inventory() {
 }
 
 /*
- * Called by the truck to indicate restocking is complete
+ * Called by the truck to indicate restocking is complete.
  */
 void VendingMachine::restocked() {
     printer.print(Printer::Vending, (char)RestockFinished);
     stocking = false;
-    bench.signal();
 }
 
 /*
@@ -95,9 +87,14 @@ _Nomutex unsigned int VendingMachine::getId() {
 }
 
 /*
- * main function for thread. Will wait until the destructor is called
+ * main function for thread. Will wait until the destructor is called.
  */
 void VendingMachine::main() {
-    _Accept(~VendingMachine);
+    while (true) {
+        _Accept(~VendingMachine) {break;}
+        or _Accept(inventory, restocked) {}
+        or _When(stocking == false) _Accept(buy) {}
+    }
+    
     printer.print(Printer::Vending, (char)Finished);
 }

@@ -17,7 +17,6 @@ _Task VendingMachine {
     Printer &printer;
     NameServer &nameServer;
     bool stocking;  // Indicates the vending machine is being restocked
-    uCondition bench;  // Students wait on the bench if the vending machine is being restocked
     enum States {Start = 'S',
             RestockStart = 'r',
             RestockFinished = 'R',
@@ -28,7 +27,7 @@ _Task VendingMachine {
   public:
     enum Flavours {F1, F2, F3, NUM_FLAVOURS};
     enum Status { BUY, STOCK, FUNDS };  // purchase status: successful buy, out of stock, insufficient funds
-    VendingMachine( Printer &prt, NameServer &nameServer, unsigned int id, unsigned int sodaCost,
+    VendingMachine( Printer &printer, NameServer &nameServer, unsigned int id, unsigned int sodaCost,
                     unsigned int maxStockPerFlavour );
     ~VendingMachine();
     Status buy( Flavours flavour, WATCard &card );
