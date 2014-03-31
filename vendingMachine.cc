@@ -5,7 +5,7 @@
 #include "vendingMachine.h"
 #include "nameServer.h"
 #include "printer.h"
-#include "WATCard.h"
+#include "watcard.h"
 
 VendingMachine::VendingMachine( Printer &printer, NameServer &nameServer, unsigned int id,
                 unsigned int sodaCost, unsigned int maxStockPerFlavour ) :

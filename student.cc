@@ -18,7 +18,7 @@ Student::Student( Printer &prt, NameServer &nameServer, WATCardOffice &cardOffic
 /* main function of student, student try to buy
  * some soda of his favorite flavour
  */
-Student::main(){
+void Student::main(){
     printer.print(Printer::Student, (char) STARTING);
 
     //generate purchase and flavour
@@ -26,7 +26,7 @@ Student::main(){
     unsigned int flavour = mprng(VendingMachine::NUM_FLAVOURS - 1);
 
     //create watcard
-    FWATCard watcard = office.create(id, INITIAL_VALUE);
+    WATCard::FWATCard watcard = office.create(id, INITIAL_VALUE);
 
     //obtain location of machines
     VendingMachine *machine = nameserver.getMachine(id);
@@ -36,13 +36,14 @@ Student::main(){
     unsigned int numPurchased = 0;
     while(numPurchased < purchase){
         yield(mprng(1,10));
+        VendingMachine::Status st;
         while(true){
             try{
-                VendingMachine::Status st = machine->buy((VendingMachine::Flavours)flavour, *(watcard()));
+                st = machine->buy((VendingMachine::Flavours)flavour, *(watcard()));
                 break;
             } catch(WATCardOffice::Lost){//card is lost
                 printer.print(Printer::Student, id, (char)WATCARD_LOST);
-                watcard = office.create(id, STARTING_WATCARD_AMOUNT);
+                watcard = office.create(id, INITIAL_VALUE);
             }
         }
         switch (st) {
@@ -53,7 +54,7 @@ Student::main(){
                 break;
             case VendingMachine::FUNDS:
                 //transfer money to watcard
-                watcard = office.transfer(id, STARTING_WATCARD_AMOUNT + machine->cost(), watcard());
+                watcard = office.transfer(id, INITIAL_VALUE + machine->cost(), watcard());
                 break;
             case VendingMachine::BUY:
                 //success

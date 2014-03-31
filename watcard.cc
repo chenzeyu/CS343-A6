@@ -15,6 +15,6 @@ void WATCard::withdraw(unsigned int amount){
     balance -= amount;
 }
 
-unsigned int WATCard::getBalance(unsigned int amount){
+unsigned int WATCard::getBalance(){
     return balance;
 }

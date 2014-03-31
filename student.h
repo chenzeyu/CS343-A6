@@ -9,7 +9,8 @@
 #include "vendingMachine.h"
 #include "watcardOffice.h"
 #include "watcard.h"
-
+#include "mprng.h"
+#include <uC++.h>
 class printer;
 class nameserver;
 class watcardOffice;

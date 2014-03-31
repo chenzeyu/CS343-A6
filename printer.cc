@@ -9,10 +9,10 @@ const unsigned int NUM_KINDS = 5;
 const int DUMMY_VALUE = -1;
 
 Printer::Printer( unsigned int numStudents, unsigned int numVendingMachines, unsigned int numCouriers ) :
-    numStudents(numStudents), numMachines(numVendingMachines), numCouriers(numCouriers) {
+    numStudents(numStudents), numVendingMachines(numVendingMachines), numCouriers(numCouriers) {
 
         //set up helpers
-        numColumns = NUM_KINDS + students + machines + couriers;
+        numColumns = NUM_KINDS + numStudents + numVendingMachines + numCouriers;
         items = new printingItem[numColumns];
         for (unsigned int i = 0; i < numColumns; i++) {
             items[i].hasValues = false;
@@ -23,7 +23,7 @@ Printer::Printer( unsigned int numStudents, unsigned int numVendingMachines, uns
         for (unsigned int i = 0; i < numStudents; i++) {
             cout << "Stud" << i << '\t';
         }
-        for (unsigned int i = 0; i < numMachines; i++) {
+        for (unsigned int i = 0; i < numVendingMachines; i++) {
             cout << "Mach" << i << '\t';
         }
         for (unsigned int i = 0; i < numCouriers; i++) {
@@ -107,7 +107,7 @@ unsigned int Printer::calculateID(Kind k){
             id = NUM_KINDS + numStudents;
             break;
         case Courier:
-            id = NUM_KINDS + numStudents + numMachines;
+            id = NUM_KINDS + numStudents + numVendingMachines;
             break;
         default:
             id = (unsigned int) k;
@@ -122,10 +122,6 @@ void Printer::print( Kind kind, unsigned int lid, char state, int value1, int va
     printMaster(id + lid, state, value1, value2);
 }
 
-void Printer::print( Kind kind, unsigned int lid, char state, int value1, int value2 ) {
-
-    printMaster(id + lid, state, value1, value2);
-}
 void Printer::print( Kind kind, char state, int value1 ) {
     printMaster(kind, state, value1, DUMMY_VALUE);
 }
