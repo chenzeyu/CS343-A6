@@ -2,7 +2,7 @@
 // Winter, 2014
 // Assignment 6
 #include "parent.h"
-
+#include <iostream>
 const unsigned int LOW = 1;
 const unsigned int HIGH = 3;
 Parent::Parent(Printer &prt, Bank &bank, unsigned int numStudents, unsigned int parentalDelay):
@@ -14,9 +14,10 @@ Parent::Parent(Printer &prt, Bank &bank, unsigned int numStudents, unsigned int 
 
 void Parent::main(){
     printer.print(Printer::Parent, 'S');
-    for(;;){
+    /* for(;;){ */
         _Accept(~Parent){
-            break;
+            std::cout << "parent ends here";
+            /* break; */
         }
         _Else{
             //yield before perform
@@ -32,7 +33,7 @@ void Parent::main(){
             //print deposit message
             printer.print(Printer::Parent, 'D', student, money);
         }
-    }
+    /* } */
     //finished
     printer.print(Printer::Parent, 'F');
 }

@@ -67,7 +67,7 @@ void uMain::main() {
     Bank bank(params.numStudents);
 
     // setup parent
-    Parent parent(printer, bank, params.numStudents, params.parentalDelay);
+    Parent *parent = new Parent(printer, bank, params.numStudents, params.parentalDelay);
 
     // setup office
     WATCardOffice office(printer, bank, params.numCouriers);
@@ -75,8 +75,9 @@ void uMain::main() {
     // setup nameserver
     NameServer nameserver(printer, params.numVendingMachines, params.numStudents);
 
+
     //setup bottling plant
-    BottlingPlant plant = new BottlingPlant(printer, nameserver, params.numVendingMachines, params.maxShippedPerFlavour, params.maxStockPerFlavour, params.timeBetweenShipments);
+    BottlingPlant *plant = new BottlingPlant(printer, nameserver, params.numVendingMachines, params.maxShippedPerFlavour, params.maxStockPerFlavour, params.timeBetweenShipments);
 
     // setup vendingMachine
     VendingMachine *vendingMachines[params.numVendingMachines];
@@ -100,4 +101,6 @@ void uMain::main() {
     for (unsigned int m = 0; m < params.numVendingMachines; m++) {
         delete vendingMachines[m];
     }
+
+    delete parent;
 }

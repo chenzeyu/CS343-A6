@@ -2,6 +2,8 @@
 // Winter, 2014
 // Assignment 6
 #include "student.h"
+#include <iostream>
+using namespace std;
 
 const unsigned int MIN_PURCHASES = 1;
 const unsigned int INITIAL_VALUE = 5;
@@ -19,7 +21,6 @@ Student::Student( Printer &prt, NameServer &nameServer, WATCardOffice &cardOffic
  * some soda of his favorite flavour
  */
 void Student::main(){
-    printer.print(Printer::Student, (char) STARTING);
 
     //generate purchase and flavour
     unsigned int purchase = mprng(MIN_PURCHASES, maxPurchases);
@@ -30,11 +31,12 @@ void Student::main(){
 
     //obtain location of machines
     VendingMachine *machine = nameserver.getMachine(id);
-    printer.print(Printer::Student, id, (char) SELECT_MACHINE, machine->getId());
+    printer.print(Printer::Student, id, (char) SELECT_MACHINE, machine->getId(), flavour);
 
     //purchase
     unsigned int numPurchased = 0;
     while(numPurchased < purchase){
+        cout << "bought " << numPurchased << " left " << purchase <<endl;
         yield(mprng(1,10));
         VendingMachine::Status st;
         while(true){

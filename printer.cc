@@ -123,7 +123,7 @@ void Printer::print( Kind kind, unsigned int lid, char state, int value1, int va
 }
 
 void Printer::print( Kind kind, char state, int value1 ) {
-    printMaster(kind, state, value1, DUMMY_VALUE);
+    print(kind, state, value1, DUMMY_VALUE);
 }
 
 void Printer::print( Kind kind, char state ) {
