@@ -24,16 +24,16 @@ bool convert(int &val, char *buffer ) { // convert C string to integer
     std::stringstream ss( buffer ); // connect stream and buffer
     ss >> dec >> val; // convert integer from buffer
     return ! ss.fail() && // conversion successful ?
-                                            // characters after conversion all blank ?
-            string( buffer ).find_first_not_of( " ", ss.tellg() ) == string::npos;
+        // characters after conversion all blank ?
+        string( buffer ).find_first_not_of( " ", ss.tellg() ) == string::npos;
 } // convert
 
 /**
-* print usage of the program
-*/
+ * print usage of the program
+ */
 static void usage(char **argv) {
     cerr << "Usage: " << argv[0] << " [ config-file [ random-seed (> 0) ] ]"
-         << endl;
+        << endl;
     exit(EXIT_FAILURE);
 }
 
@@ -67,29 +67,28 @@ void uMain::main() {
     Bank bank(params.numStudents);
 
     // setup parent
-    Parent *parent = new Parent(printer, bank, params.numStudents, params.parentalDelay);
+    Parent parent(printer, bank, params.numStudents, params.parentalDelay);
 
     // setup office
-    WATCardOffice *office = new WATCardOffice(printer, bank, params.numCouriers);
+    WATCardOffice office(printer, bank, params.numCouriers);
 
     // setup nameserver
-    NameServer *nameserver = new NameServer(printer, params.numVendingMachines, params.numStudents);
+    NameServer nameserver(printer, params.numVendingMachines, params.numStudents);
 
     // setup vendingMachine
     VendingMachine *vendingMachines[params.numVendingMachines];
     for (unsigned int m = 0; m < params.numVendingMachines; m++) {
-        vendingMachines[m] = new VendingMachine(printer, *nameserver, m, params.sodaCost, params.maxStockPerFlavour);
+        vendingMachines[m] = new VendingMachine(printer, nameserver, m, params.sodaCost, params.maxStockPerFlavour);
     }
-
-    //setup bottling plant
-    BottlingPlant *plant = new BottlingPlant(printer, *nameserver, params.numVendingMachines, params.maxShippedPerFlavour, params.maxStockPerFlavour, params.timeBetweenShipments);
 
     //set up students
     Student *students[params.numStudents];
     for (unsigned int s = 0; s < params.numStudents; s++) {
-        students[s] = new Student(printer, *nameserver, *office, s, params.maxPurchases);
+        students[s] = new Student(printer, nameserver, office, s, params.maxPurchases);
     }
 
+    //setup bottling plant
+    BottlingPlant plant = new BottlingPlant(printer, nameserver, params.numVendingMachines, params.maxShippedPerFlavour, params.maxStockPerFlavour, params.timeBetweenShipments);
 
     // cleaning up
     for (unsigned int s = 0; s < params.numStudents; s++) {
@@ -101,8 +100,4 @@ void uMain::main() {
     for (unsigned int m = 0; m < params.numVendingMachines; m++) {
         delete vendingMachines[m];
     }
-
-    delete nameserver;
-    delete office;
-    delete parent;
 }
