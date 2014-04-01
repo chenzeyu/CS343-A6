@@ -75,6 +75,9 @@ void uMain::main() {
     // setup nameserver
     NameServer nameserver(printer, params.numVendingMachines, params.numStudents);
 
+    //setup bottling plant
+    BottlingPlant plant = new BottlingPlant(printer, nameserver, params.numVendingMachines, params.maxShippedPerFlavour, params.maxStockPerFlavour, params.timeBetweenShipments);
+
     // setup vendingMachine
     VendingMachine *vendingMachines[params.numVendingMachines];
     for (unsigned int m = 0; m < params.numVendingMachines; m++) {
@@ -86,9 +89,6 @@ void uMain::main() {
     for (unsigned int s = 0; s < params.numStudents; s++) {
         students[s] = new Student(printer, nameserver, office, s, params.maxPurchases);
     }
-
-    //setup bottling plant
-    BottlingPlant plant = new BottlingPlant(printer, nameserver, params.numVendingMachines, params.maxShippedPerFlavour, params.maxStockPerFlavour, params.timeBetweenShipments);
 
     // cleaning up
     for (unsigned int s = 0; s < params.numStudents; s++) {
