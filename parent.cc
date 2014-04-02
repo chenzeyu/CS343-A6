@@ -2,7 +2,6 @@
 // Winter, 2014
 // Assignment 6
 #include "parent.h"
-#include <iostream>
 const unsigned int LOW = 1;
 const unsigned int HIGH = 3;
 Parent::Parent(Printer &prt, Bank &bank, unsigned int numStudents, unsigned int parentalDelay):
@@ -16,7 +15,6 @@ void Parent::main(){
     printer.print(Printer::Parent, 'S');
     for(;;){
         _Accept(~Parent){
-            std::cout << "parent ends here";
             break;
         }
         _Else{
