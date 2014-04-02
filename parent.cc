@@ -14,10 +14,10 @@ Parent::Parent(Printer &prt, Bank &bank, unsigned int numStudents, unsigned int 
 
 void Parent::main(){
     printer.print(Printer::Parent, 'S');
-    /* for(;;){ */
+    for(;;){
         _Accept(~Parent){
             std::cout << "parent ends here";
-            /* break; */
+            break;
         }
         _Else{
             //yield before perform
@@ -33,7 +33,7 @@ void Parent::main(){
             //print deposit message
             printer.print(Printer::Parent, 'D', student, money);
         }
-    /* } */
+    }
     //finished
     printer.print(Printer::Parent, 'F');
 }

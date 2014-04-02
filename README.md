@@ -17,9 +17,9 @@ BottlingPlant, NameServer, Truck, VendingMachine all compile but haven't been te
 Chen TODO
 ------------
 * WatCard - implemented
-* WatCardOffice - not finished
+* WatCardOffice - implemented
 * Parent - implemented
 * Bank - implemented
 * Student - implemented
 
-All compile but haven't been tested.
+Can compile into an executable however got bugs

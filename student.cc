@@ -35,10 +35,16 @@ void Student::main(){
 
     //purchase
     unsigned int numPurchased = 0;
+
+    //buy soda until getting "purchase" soda 
     while(numPurchased < purchase){
+
         cout << "bought " << numPurchased << " left " << purchase <<endl;
+
         yield(mprng(1,10));
         VendingMachine::Status st;
+
+        //buy soda
         while(true){
             try{
                 st = machine->buy((VendingMachine::Flavours)flavour, *(watcard()));

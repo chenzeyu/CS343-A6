@@ -15,16 +15,15 @@ class Bank;
 
 _Task WATCardOffice {
     private:
-        Printer &printer;
-        Bank &bank;
-        unsigned int numCouriers;
+
+        //args definition
         struct Args {
-            unsigned int id;
+            unsigned int sid;
             Bank &bank;
-            WATCard *watcard;
+            WATCard *card;
             unsigned int amount;
-            Args(Bank &bank, unsigned int id, WATCard *watcard, unsigned int amount) :
-                id(id), bank(bank), watcard(watcard), amount(amount) {}
+            Args(Bank &bank, unsigned int sid, WATCard *watcard, unsigned int amount) :
+                sid(sid), bank(bank), card(watcard), amount(amount) {}
         };
 
         struct Job {                           // marshalled arguments and return future
@@ -32,7 +31,25 @@ _Task WATCardOffice {
             WATCard::FWATCard result;                   // return future
             Job( Args args ) : args( args ) {}
         };
-        _Task Courier {};                 // communicates with bank
+
+        _Task Courier {
+            private:
+                void main();
+                unsigned int id;
+                WATCardOffice *office;
+                Printer &printer;
+                Bank &bank;
+            public:
+                Courier(unsigned int id, WATCardOffice *office, Printer &printer, Bank &bank);
+        };                 // communicates with bank
+
+        Courier **couriers;
+        Job *pendingJob;
+        Printer &printer;
+        Bank &bank;
+        unsigned int numCouriers;
+        bool jobDone;
+
         void main();
 
     public:
@@ -40,6 +57,7 @@ _Task WATCardOffice {
         WATCardOffice( Printer &prt, Bank &bank, unsigned int numCouriers );
         WATCard::FWATCard create( unsigned int sid, unsigned int amount );
         WATCard::FWATCard transfer( unsigned int sid, unsigned int amount, WATCard *card );
+        ~WATCardOffice();
         Job *requestWork();
 };
 
