@@ -11,7 +11,7 @@ const unsigned int INITIAL_VALUE = 5;
 Student::Student( Printer &prt, NameServer &nameServer, WATCardOffice &cardOffice, unsigned int id,
         unsigned int maxPurchases ):
     printer(prt),
-    nameserver(nameserver),
+    nameserver(nameServer),
     office(cardOffice),
     id(id),
     maxPurchases(maxPurchases){
@@ -21,10 +21,11 @@ Student::Student( Printer &prt, NameServer &nameServer, WATCardOffice &cardOffic
  * some soda of his favorite flavour
  */
 void Student::main(){
-
     //generate purchase and flavour
     unsigned int purchase = mprng(MIN_PURCHASES, maxPurchases);
     unsigned int flavour = mprng(VendingMachine::NUM_FLAVOURS - 1);
+
+    printer.print(Printer::Student, id, char(STARTING), flavour, purchase);
 
     //create watcard
     WATCard::FWATCard watcard = office.create(id, INITIAL_VALUE);
