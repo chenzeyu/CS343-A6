@@ -15,7 +15,7 @@ VendingMachine::VendingMachine( Printer &printer, NameServer &nameServer, unsign
         maxStockPerFlavour(maxStockPerFlavour),
         stocking(false) {
 
-    printer.print(Printer::Vending, (char)Start, sodaCost);
+    printer.print(Printer::Vending, id, (char)Start, sodaCost);
     sodaCounts = new unsigned int[NUM_FLAVOURS];
     std::fill(sodaCounts, sodaCounts + NUM_FLAVOURS, 0);
     nameServer.VMregister(this);
@@ -48,7 +48,7 @@ VendingMachine::Status VendingMachine::buy(Flavours flavour, WATCard &card) {
         card.withdraw(sodaCost);
         sodaCounts[flavour] -= 1;
         status = BUY;
-        printer.print(Printer::Vending, (char)Bought, flavour, sodaCounts[flavour]);
+        printer.print(Printer::Vending, id, (char)Bought, flavour, sodaCounts[flavour]);
     }
 
     return status;
@@ -59,7 +59,7 @@ VendingMachine::Status VendingMachine::buy(Flavours flavour, WATCard &card) {
  * This is called by the truck during restocking.
  */
 unsigned int* VendingMachine::inventory() {
-    printer.print(Printer::Vending, (char)RestockStart);
+    printer.print(Printer::Vending, id, (char)RestockStart);
     stocking = true;
     return sodaCounts;
 }
@@ -68,7 +68,7 @@ unsigned int* VendingMachine::inventory() {
  * Called by the truck to indicate restocking is complete.
  */
 void VendingMachine::restocked() {
-    printer.print(Printer::Vending, (char)RestockFinished);
+    printer.print(Printer::Vending, id, (char)RestockFinished);
     stocking = false;
 }
 
@@ -96,5 +96,5 @@ void VendingMachine::main() {
         or _When(stocking == false) _Accept(buy) {}
     }
     
-    printer.print(Printer::Vending, (char)Finished);
+    printer.print(Printer::Vending, id, (char)Finished);
 }
