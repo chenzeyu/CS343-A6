@@ -12,6 +12,7 @@ _Task NameServer {
     Printer &printer;
     unsigned int numVendingMachines;
     unsigned int numStudents;
+    unsigned int numRegistered;
     VendingMachine **vendingMachines;
     unsigned int *nextVendingMachine;
     enum States {Start = 'S',

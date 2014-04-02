@@ -9,7 +9,8 @@
 NameServer::NameServer(Printer &printer, unsigned int numVendingMachines, unsigned int numStudents) :
         printer(printer),
         numVendingMachines(numVendingMachines),
-        numStudents(numStudents) {
+        numStudents(numStudents),
+        numRegistered(0) {
 
     printer.print(Printer::NameServer, (char)Start);
 
@@ -34,6 +35,7 @@ NameServer::~NameServer() {
 void NameServer::VMregister(VendingMachine *vendingMachine) {
     printer.print(Printer::NameServer, (char)Registering, vendingMachine->getId());
     vendingMachines[vendingMachine->getId()] = vendingMachine;
+    numRegistered += 1;
 }
 
 /*
@@ -58,9 +60,13 @@ VendingMachine **NameServer::getMachineList() {
  * main function of thread. Will wait for destructor to be called.
  */
 void NameServer::main() {
+    while (numRegistered < numVendingMachines) {
+        _Accept(VMregister);
+    }
+
     while (true) {
         _Accept(~NameServer) {break;}
-        or _Accept(VMregister, getMachine, getMachineList) {}
+        or _Accept(getMachine, getMachineList) {}
     }
     printer.print(Printer::NameServer, (char)Finished);
 }
