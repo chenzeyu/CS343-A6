@@ -2,7 +2,6 @@
 // Winter, 2014
 // Assignment 6
 #include "student.h"
-#include <iostream>
 using namespace std;
 
 const unsigned int MIN_PURCHASES = 1;
@@ -39,8 +38,6 @@ void Student::main(){
 
     //buy soda until getting "purchase" soda 
     while(numPurchased < purchase){
-
-        cout << "bought " << numPurchased << " left " << purchase <<endl;
 
         yield(mprng(1,10));
         VendingMachine::Status st;
