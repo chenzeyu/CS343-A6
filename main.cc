@@ -85,7 +85,7 @@ void uMain::main() {
 
             //setup bottling plant
             BottlingPlant plant(printer, nameserver, params.numVendingMachines, params.maxShippedPerFlavour, params.maxStockPerFlavour, params.timeBetweenShipments);
-            std::cout << &nameserver << std::endl;
+
             //set up students
             Student *students[params.numStudents];
             for (unsigned int s = 0; s < params.numStudents; s++) {
