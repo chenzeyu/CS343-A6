@@ -5,67 +5,81 @@ Assignment 6
 
 Test Documentation
 
-	This document contains two sections, the first section focuses on the interface to the soda program and the second
-	section is concerned with the implementation of the soda program.
+    This document contains two sections, the first section focuses on the interface to the soda program and the second
+    section is concerned with the implementation of the soda program.
 
 
 Section 1: Interface
 
-	This section tests the interface to the program and ensures that it is working correctly. It tests that an invalid
-	combination of arguments does not cause the program to crash but rather print out an appopriate error message and
-	that a correct combination of arguments is handled correctly by the program.
+    This section tests the interface to the program and ensures that it is working correctly. It tests that an invalid
+    combination of arguments does not cause the program to crash but rather print out an appopriate error message and
+    that a correct combination of arguments is handled correctly by the program.
 
-	The interface to the program is:
-		soda [config-file [seed] ]
-	where:
-		config-file is the name of the file to be used for config, defaults to "soda.config".
-		seed is the seed (int > 0) to use for the RNG, defualts to the current process ID.
+    The interface to the program is:
+        soda [ config-file [ seed (> 0) ] ]
+    where:
+        config-file is the name of the file to be used for config, defaults to "soda.config".
+        seed is the seed to use for the RNG, defualts to the current process ID.
 
-	Test 1.1: Non-existant config file, should produce file error and termintate
-		% ./soda error
-		Error: could not open input file "error"
+    Test 1.1: Non-existant config file, should produce file error and termintate
+        % ./soda error
+        Error: could not open input file "error"
 
-	Test 1.2: Invalid seed, should produce usage error and termintate
-		% ./soda soda.config a
-		Usage: ./soda [ config-file [ random-seed (> 0) ] ]
+    Test 1.2: Invalid seed, should produce usage error and termintate
+        % ./soda soda.config a
+        Usage: ./soda [ config-file [ random-seed (> 0) ] ]
 
-		% ./soda soda.config -1
-		Usage: ./soda [ config-file [ random-seed (> 0) ] ]
+        % ./soda soda.config -1
+        Usage: ./soda [ config-file [ random-seed (> 0) ] ]
 
-		% ./soda soda.config 5.0
-		Usage: ./soda [ config-file [ random-seed (> 0) ] ]
+        % ./soda soda.config 5.0
+        Usage: ./soda [ config-file [ random-seed (> 0) ] ]
 
-	Test 1.3: Incorrect number of arguments, should produce usage error and terminate
-		% ./soda soda.config 15 10
-		Usage: ./soda [ config-file [ random-seed (> 0) ] ]
+    Test 1.3: Incorrect number of arguments, should produce usage error and terminate
+        % ./soda soda.config 15 10
+        Usage: ./soda [ config-file [ random-seed (> 0) ] ]
 
-		% ./soda soda.config 15 a 5
-		Usage: ./soda [ config-file [ random-seed (> 0) ] ]
+        % ./soda soda.config 15 a 5
+        Usage: ./soda [ config-file [ random-seed (> 0) ] ]
 
-	Test 1.4: Open correct config file, should use 1 student and 1 vending machine
-		% ./soda soda2.config
+    Test 1.4: Open correct config file, should use 1 student and 1 vending machine
+        % ./soda soda2.config
         Parent  WATOff  Names   Truck   Plant   Stud0   Mach0   Cour0   
         ======= ======= ======= ======= ======= ======= ======= ======= 
         S       S       S                               S1      S       
-                T0,5    R0              S       S2,1                    
-                        N0,0    S       G14     V0              t0,5    
-                        N0,0                    V0              T0,5    
-                        N0,0    P14     P       V0                      
-                                d0,14                   r               
-                                U0,6                                    
-                                D0,5    G9              R               
+                C0,5    R0              S       S0,1                    
+                W       N0,0    S       G33     V0              t0,5    
+                                P33     P                               
+                                d0,33                   r               
+        D0,1                    D0,8    G9              R               
                                 P9      P                               
                                 d0,9                    r               
-                                U0,5                                    
-        D0,2            N0,0    D0,8    G19     V0      R               
-                        N0,0    P19     P       V0                      
-                                d0,19                   r               
-                                U0,1                                    
-                                D0,15   G13             R               
-                                P13     P                               
-                                d0,13                   r               
-                                D0,12   G11             R               
-                                                B4      B2,4            
+                                D0,9    G26             R               
+                                P26     P                               
+                                d0,26                   r               
+                                D0,26   G22             R               
+                                P22     P                               
+                                d0,22                   r               
+        D0,1                    D0,22   G36             R               
+                                P36     P                               
+                                d0,36                   r               
+                                D0,36   G21             R               
+                                P21     P                               
+                                d0,21                   r               
+        D0,2                    D0,21   G24             R               
+                                P24     P                               
+                                d0,24                   r               
+                                D0,24   G44             R               
+                                P44     P                               
+                                d0,44                   r               
+                                D0,44   G32             R               
+                                P32     P                               
+                                d0,32                   r               
+        D0,3                    D0,32   G30             R       T0,5    
+                                P30     P                               
+                                d0,30                   r               
+                                D0,30   G41             R               
+                                                B4      B0,4            
         ...     ...     ...     ...     ...     F       ...     ...     
         ...     ...     ...     F       ...     ...     ...     ...     
         ...     ...     ...     ...     F       ...     ...     ...     
@@ -73,8 +87,7 @@ Section 1: Interface
         ...     ...     F       ...     ...     ...     ...     ...     
         ...     ...     ...     ...     ...     ...     ...     F       
         ...     F       ...     ...     ...     ...     ...     ...     
-        D0,2                                                            
-        D0,2                                                            
+        D0,1                                                            
         F       ...     ...     ...     ...     ...     ...     ...     
         ***********************
 
@@ -87,4 +100,39 @@ Section 2: Implementation
     The section focuses on the implementation of the program and ensures that it is correct according to the
     specification and that it is deadlock free.
 
-    Test 2.1: 
+    Test 2.1: Large amount of students, small amount of vending machines and couriers.
+        using config file:
+            SodaCost                   3     # Manufacturer Suggested Retail Price (MSRP) per bottle
+            NumStudents                100   # number of students to create
+            MaxPurchases               12    # maximum number of bottles a student purchases
+            NumVendingMachines         1     # number of vending machines
+            MaxStockPerFlavour         10    # maximum number of bottles of each flavour in a vending machine
+            MaxShippedPerFlavour       10    # maximum number of bottles of each flavour generated by the bottling
+                                             #    plant per production run
+            TimeBetweenShipments       10    # length of time between shipment pickup
+            ParentalDelay              20    # length of time between new deposits of funds
+            NumCouriers                1     # maximum number of couriers in the pool
+
+        % ./soda
+        ~output snipped~
+
+        (the program successfully completes and inspection shows that it appears to run correctly.)
+
+
+    Test 2.2: Large amount of students, vending machines and couriers.
+        using config file:
+            SodaCost                   3     # Manufacturer Suggested Retail Price (MSRP) per bottle
+            NumStudents                100   # number of students to create
+            MaxPurchases               12    # maximum number of bottles a student purchases
+            NumVendingMachines         20    # number of vending machines
+            MaxStockPerFlavour         10    # maximum number of bottles of each flavour in a vending machine
+            MaxShippedPerFlavour       20    # maximum number of bottles of each flavour generated by the bottling
+                                             #    plant per production run
+            TimeBetweenShipments       10    # length of time between shipment pickup
+            ParentalDelay              20    # length of time between new deposits of funds
+            NumCouriers                10    # maximum number of couriers in the pool
+
+        % ./soda
+        ~output snipped~
+
+        (the program successfully completes and inspection shows that it appears to run correctly.)
