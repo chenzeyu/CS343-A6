@@ -7,9 +7,8 @@
 const unsigned int CHANCE_LOST = 6;
 
 WATCardOffice::WATCardOffice( Printer &prt, Bank &bank, unsigned int numCouriers ) :
-    printer(prt), bank(bank), numCouriers(numCouriers), pendingJob(NULL)
+    printer(prt), bank(bank), numCouriers(numCouriers), pendingJob(NULL), jobDone(false)
 {
-    jobDone = false;
     couriers = new Courier *[numCouriers];
     for(unsigned int i = 0; i < numCouriers; i++){
         couriers[i] = new Courier(i, this, printer, bank);
@@ -27,7 +26,7 @@ WATCard::FWATCard WATCardOffice::create( unsigned int sid, unsigned int amount )
     pendingJob = new Job(Args(bank, sid, new WATCard(), amount));
 
     //courier prints complete transfer
-    printer.print(Printer::WATCardOffice, 'T', sid, amount);
+    printer.print(Printer::WATCardOffice, 'C', sid, amount);
 
     return pendingJob->result;
 }
@@ -61,7 +60,9 @@ void WATCardOffice::main(){
             break;
         }
         or _When(pendingJob == NULL) _Accept(create, transfer);
-        or _When(pendingJob != NULL) _Accept(requestWork);
+        or _When(pendingJob != NULL) _Accept(requestWork) {
+            printer.print(Printer::WATCardOffice, 'W');
+        }
     }
 
     //office finished
