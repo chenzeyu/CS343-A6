@@ -25,7 +25,12 @@ _Task VendingMachine {
 
     void main();
   public:
-    enum Flavours {F1, F2, F3, NUM_FLAVOURS};
+    enum Flavours {Lemon,
+            Raspberry,
+            Cola,
+            Lime,
+            Orange,
+            NUM_FLAVOURS};
     enum Status { BUY, STOCK, FUNDS };  // purchase status: successful buy, out of stock, insufficient funds
     VendingMachine( Printer &printer, NameServer &nameServer, unsigned int id, unsigned int sodaCost,
                     unsigned int maxStockPerFlavour );
