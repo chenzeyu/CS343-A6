@@ -1,0 +1,90 @@
+CS343 - Concurrent and Parallel Programming
+Winter, 2014
+Assignment 6
+
+
+Test Documentation
+
+	This document contains two sections, the first section focuses on the interface to the soda program and the second
+	section is concerned with the implementation of the soda program.
+
+
+Section 1: Interface
+
+	This section tests the interface to the program and ensures that it is working correctly. It tests that an invalid
+	combination of arguments does not cause the program to crash but rather print out an appopriate error message and
+	that a correct combination of arguments is handled correctly by the program.
+
+	The interface to the program is:
+		soda [config-file [seed] ]
+	where:
+		config-file is the name of the file to be used for config, defaults to "soda.config".
+		seed is the seed (int > 0) to use for the RNG, defualts to the current process ID.
+
+	Test 1.1: Non-existant config file, should produce file error and termintate
+		% ./soda error
+		Error: could not open input file "error"
+
+	Test 1.2: Invalid seed, should produce usage error and termintate
+		% ./soda soda.config a
+		Usage: ./soda [ config-file [ random-seed (> 0) ] ]
+
+		% ./soda soda.config -1
+		Usage: ./soda [ config-file [ random-seed (> 0) ] ]
+
+		% ./soda soda.config 5.0
+		Usage: ./soda [ config-file [ random-seed (> 0) ] ]
+
+	Test 1.3: Incorrect number of arguments, should produce usage error and terminate
+		% ./soda soda.config 15 10
+		Usage: ./soda [ config-file [ random-seed (> 0) ] ]
+
+		% ./soda soda.config 15 a 5
+		Usage: ./soda [ config-file [ random-seed (> 0) ] ]
+
+	Test 1.4: Open correct config file, should use 1 student and 1 vending machine
+		% ./soda soda2.config
+        Parent  WATOff  Names   Truck   Plant   Stud0   Mach0   Cour0   
+        ======= ======= ======= ======= ======= ======= ======= ======= 
+        S       S       S                               S1      S       
+                T0,5    R0              S       S2,1                    
+                        N0,0    S       G14     V0              t0,5    
+                        N0,0                    V0              T0,5    
+                        N0,0    P14     P       V0                      
+                                d0,14                   r               
+                                U0,6                                    
+                                D0,5    G9              R               
+                                P9      P                               
+                                d0,9                    r               
+                                U0,5                                    
+        D0,2            N0,0    D0,8    G19     V0      R               
+                        N0,0    P19     P       V0                      
+                                d0,19                   r               
+                                U0,1                                    
+                                D0,15   G13             R               
+                                P13     P                               
+                                d0,13                   r               
+                                D0,12   G11             R               
+                                                B4      B2,4            
+        ...     ...     ...     ...     ...     F       ...     ...     
+        ...     ...     ...     F       ...     ...     ...     ...     
+        ...     ...     ...     ...     F       ...     ...     ...     
+        ...     ...     ...     ...     ...     ...     F       ...     
+        ...     ...     F       ...     ...     ...     ...     ...     
+        ...     ...     ...     ...     ...     ...     ...     F       
+        ...     F       ...     ...     ...     ...     ...     ...     
+        D0,2                                                            
+        D0,2                                                            
+        F       ...     ...     ...     ...     ...     ...     ...     
+        ***********************
+
+
+        The above four tests determine that the interface to the program is working correctly.
+
+
+Section 2: Implementation
+    
+    The section focuses on the implementation of the program and ensures that it is correct according to the
+    specification and that it is deadlock free.
+
+    Test 2.1: 
