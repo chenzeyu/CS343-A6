@@ -1,10 +1,14 @@
 // CS343 - Concurrent and Parallel Programming
 // Winter, 2014
 // Assignment 6
+
 #include "bank.h"
+
 Bank::Bank(unsigned int numStudents):numStudents(numStudents){
     accountConditions = new uCondition[numStudents];
     studentAccounts = new unsigned int[numStudents];
+    // initialise bank accounts to $0
+    std::fill(studentAccounts, studentAccounts + numStudents, 0);
 }
 
 Bank::~Bank(){
@@ -31,7 +35,7 @@ void Bank::deposit(unsigned int id, unsigned int amount){
 void Bank::withdraw(unsigned int id, unsigned int amount){
 
     //wait until there's sufficient funds
-    while(studentAccounts[id] < amount){
+    while(studentAccounts[id] <= amount){
         accountConditions[id].wait();
     }
     studentAccounts[id] -= amount;
