@@ -1,8 +1,8 @@
 // CS343 - Concurrent and Parallel Programming
 // Winter, 2014
 // Assignment 6
+
 #include "student.h"
-using namespace std;
 
 const unsigned int MIN_PURCHASES = 1;
 const unsigned int INITIAL_VALUE = 5;
@@ -31,7 +31,7 @@ void Student::main(){
 
     //obtain location of machines
     VendingMachine *machine = nameserver.getMachine(id);
-    printer.print(Printer::Student, id, (char) SELECT_MACHINE, machine->getId(), flavour);
+    printer.print(Printer::Student, id, (char) SELECT_MACHINE, machine->getId());
 
     //purchase
     unsigned int numPurchased = 0;
@@ -56,7 +56,7 @@ void Student::main(){
             case VendingMachine::STOCK:
                 //select another machine
                 machine = nameserver.getMachine(id);
-                printer.print(Printer::Student, id, (char) SELECT_MACHINE, machine->getId());
+                printer.print(Printer::Student, id, (char)SELECT_MACHINE, machine->getId());
                 break;
             case VendingMachine::FUNDS:
                 //transfer money to watcard
@@ -65,7 +65,7 @@ void Student::main(){
             case VendingMachine::BUY:
                 //success
                 numPurchased++;
-                printer.print(Printer::Student, id, (char)VendingMachine::BUY, machine->getId());
+                printer.print(Printer::Student, id, (char)BUY, watcard()->getBalance());
                 break;
 
         }
