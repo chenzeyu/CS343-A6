@@ -1,7 +1,5 @@
 // CS343 - Concurrent and Parallel Programming
 // Winter, 2014
-// CS343 - Concurrent and Parallel Programming
-// Winter, 2014
 // Assignment 6
 #ifndef WATCARDOFFICE_H
 #define WATCARDOFFICE_H
