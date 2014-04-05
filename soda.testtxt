@@ -100,6 +100,117 @@ Section 2: Implementation
     The section focuses on the implementation of the program and ensures that it is correct according to the
     specification and that it is deadlock free.
 
+    Due to the concurrent and partially non-deterministic nature of the program it can be tricky to write exact tests
+    that ensure correctness. However, we can observe certain invariants in the code which help to prove certain
+    properties. For instance, we can investigate the state transitions of the different objects and the order of states
+    between different objects. The following program output shows all indivual state transitions occuring in the correct
+    order (e.g vending machine r->R, plant G->P) and the ordering between different objects being correct (e.g plant
+    P occurs before Mach0 r, R before Mach1 r, R), it also demonstrates the round robin distribution of vending machines
+    to students. The order of de-allocation of objects combined with appropriate accept of destructor calls ensures that
+    the program will terminate and not end up in a deadlock.
+        Parent  WATOff  Names   Truck   Plant   Stud0   Stud1   Mach0   Mach1   Mach2   Cour0   
+        ======= ======= ======= ======= ======= ======= ======= ======= ======= ======= ======= 
+        S       S       S                                       S2                      S       
+                        R0                                              S2                      
+                        R1                                                      S2              
+                C0,5    R2              S       S1,1                                            
+                W       N0,0    S               V0      S3,2                            t0,5    
+                C1,5    N1,1            G27             V1                                      
+                                P27     P                                                       
+                                d0,27                           r                               
+                                U0,23                                                           
+        D0,2                    D0,0    G29                     R                               
+                                P29     P                                                       
+                                d0,29                           r                               
+                                U0,13                                                           
+                                D0,19                           R                               
+                                d1,19                                   r                       
+                                U1,31                                                           
+        D1,3                    D1,0    G29                             R                       
+                                P29     P                                                       
+                                d0,29                           r                               
+                                U0,8                                                            
+                                D0,24                           R                               
+                                d1,24                                   r                       
+                                U1,24                                                           
+                                D1,17                                   R                       
+                                d2,17                                           r               
+                                U2,33                                                           
+                                D2,0    G31                                     R               
+                                P31     P                                                       
+                                d0,31                           r                               
+                                D0,23                           R                               
+                                d1,23                                   r                       
+                                U1,13                                                           
+                                D1,12                                   R                       
+                                d2,12                                           r               
+                                U2,24                                                           
+        D1,2                    D2,3    G28                                     R               
+                                P28     P                                                       
+                                d0,28                           r                               
+                                D0,28                           R                               
+                                d1,28                                   r                       
+                                U1,2                                                            
+                                D1,17                                   R                       
+                                d2,17                                           r               
+                                U2,20                                                           
+                                D2,13   G18                                     R               
+                                P18     P                                                       
+                                d0,18                           r                               
+        D0,1                    D0,18                           R                               
+                                d1,18                                   r                       
+                                D1,16                                   R                       
+                                d2,16                                           r               
+                                U2,14                                                           
+                                D2,10   G25                                     R               
+                                P25     P                                                       
+                                d0,25                           r                               
+                                D0,25                           R                               
+                                d1,25                                   r                       
+                                D1,25                                   R                       
+                                d2,25                                           r               
+                                U2,6                                                            
+        D1,2                    D2,17   G22                                     R               
+                                P22     P                                                       
+                                d0,22                           r                               
+                                D0,22                           R                               
+                                d1,22                                   r                       
+                                D1,22                                   R                       
+                                d2,22                                           r               
+                                U2,1                                                            
+        D0,3                    D2,17   G21                     B1,9            R       T0,5    
+                                P21     P                                                       
+                                d0,21                                                   t1,5    
+                                                B3                                      T1,5    
+        ...     ...     ...     ...     ...     F       ...     ...     ...     ...     ...     
+                W               D0,20                   B3      r       B3,9                    
+                                d1,20                           R       r                       
+                                U1,1                                                            
+                                D1,20                                   R                       
+                                d2,20                                           r               
+                                D2,19   G23                                     R               
+                                P23     P                                                       
+                                d0,23                   B1      r       B3,8                    
+        ...     ...     ...     ...     ...     ...     F       ...     ...     ...     ...     
+        D1,1                    D0,23                           R                               
+                                d1,23                                   r                       
+                                D1,21   G26                             R                       
+                                d2,21                                           r               
+                                D2,21                                           R               
+        ...     ...     ...     F       ...     ...     ...     ...     ...     ...     ...     
+        ...     ...     ...     ...     F       ...     ...     ...     ...     ...     ...     
+        ...     ...     ...     ...     ...     ...     ...     F       ...     ...     ...     
+        ...     ...     ...     ...     ...     ...     ...     ...     F       ...     ...     
+        ...     ...     ...     ...     ...     ...     ...     ...     ...     F       ...     
+        ...     ...     F       ...     ...     ...     ...     ...     ...     ...     ...     
+        ...     ...     ...     ...     ...     ...     ...     ...     ...     ...     F       
+        ...     F       ...     ...     ...     ...     ...     ...     ...     ...     ...     
+        D0,3                                                                                    
+        D1,2                                                                                    
+        F       ...     ...     ...     ...     ...     ...     ...     ...     ...     ...     
+        ***********************
+
+
     Test 2.1: Large amount of students, small amount of vending machines and couriers.
         using config file:
             SodaCost                   3     # Manufacturer Suggested Retail Price (MSRP) per bottle
@@ -116,7 +227,7 @@ Section 2: Implementation
         % ./soda
         ~output snipped~
 
-        (the program successfully completes and inspection shows that it appears to run correctly.)
+        (ran multiple times, the program successfully completes and inspection shows that it appears to run correctly.)
 
 
     Test 2.2: Large amount of students, vending machines and couriers.
@@ -135,4 +246,8 @@ Section 2: Implementation
         % ./soda
         ~output snipped~
 
-        (the program successfully completes and inspection shows that it appears to run correctly.)
+        (ran multiple times, the program successfully completes and inspection shows that it appears to run correctly.)
+
+
+
+These tests should sufficiently show the correct interface and implementation of the program.
